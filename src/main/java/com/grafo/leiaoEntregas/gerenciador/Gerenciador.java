@@ -1,6 +1,6 @@
 package com.grafo.leiaoEntregas.gerenciador;
 
-import com.grafo.leiaoEntregas.Entradas;
+import com.grafo.leiaoEntregas.models.Entradas;
 import com.grafo.leiaoEntregas.entradas.LerEntradas;
 import com.grafo.leiaoEntregas.entregas.Entregas;
 import com.grafo.leiaoEntregas.entregas.Rota;

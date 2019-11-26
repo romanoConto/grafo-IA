@@ -1,4 +1,4 @@
-package com.grafo.leiaoEntregas;
+package com.grafo.leiaoEntregas.models;
 
 public class PontoEntrega
 {

@@ -1,9 +1,9 @@
 package com.grafo.leiaoEntregas.entradas;
 
-import com.grafo.leiaoEntregas.Distancia;
-import com.grafo.leiaoEntregas.Entradas;
-import com.grafo.leiaoEntregas.PontoEntrega;
-import com.grafo.leiaoEntregas.PontoGrafo;
+import com.grafo.leiaoEntregas.models.Distancia;
+import com.grafo.leiaoEntregas.models.Entradas;
+import com.grafo.leiaoEntregas.models.PontoEntrega;
+import com.grafo.leiaoEntregas.models.PontoGrafo;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
