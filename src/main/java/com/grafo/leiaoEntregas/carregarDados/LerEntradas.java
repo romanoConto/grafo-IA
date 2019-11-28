@@ -29,41 +29,42 @@ public class LerEntradas {
         List<Vertice> vertices = new ArrayList<>();
         List<PontoEntrega> pontosEntregas = new ArrayList<>();
 
-        int linhaMatriz = 0;
-        boolean matriz = false;
+        int tamanhoLinhaMatriz = 0;
+        boolean matrizElaborada = false;
 
         while ((linhaTxt = leituraDoBuffer.readLine()) != null) {
 
-            int colunaMatriz = 0;
+            int tamanhoColunaMatriz = 0;
 
             List<String> colunas = Arrays.asList(linhaTxt.split(","));
 
-            //Verifica se é o tamanho da matriz distancia
+            //Verifica se é o tamanho da matrizElaborada distancia
             if (colunas.size() == 1 && arquivoTxt.getTamanhoMatrizGrafo() == 0) {
                 arquivoTxt.setTamanhoMatrizGrafo(Integer.parseInt(colunas.get(0)));
                 continue;
             }
 
-            //Verifica se é o tamanho da matriz de entregas
+            //Verifica se é o tamanho da matrizElaborada de entregas
             if (colunas.size() == 1 && arquivoTxt.getTamanhoMatrizEntrega() == 0) {
                 arquivoTxt.setTamanhoMatrizEntrega(Integer.parseInt(colunas.get(0)));
                 continue;
             }
 
+
             if (!linhaTxt.contains("'") && isRoute(colunas)) {
-                PontoEntrega caminho = new PontoEntrega();
+                PontoEntrega rota = new PontoEntrega();
 
-                caminho.setVerticeOrigem(Integer.parseInt(colunas.get(0)));
-                caminho.setVerticeDestino(colunas.get(1));
-                caminho.setBonus(Integer.parseInt(colunas.get(2)));
+                rota.setVerticeOrigem(Integer.parseInt(colunas.get(0)));
+                rota.setVerticeDestino(colunas.get(1));
+                rota.setBonus(Integer.parseInt(colunas.get(2)));
 
-                pontosEntregas.add(caminho);
+                pontosEntregas.add(rota);
                 continue;
             }
 
             for (String col : colunas) {
 
-                //Verifica se é o cabeçalho da matriz com o nome dos pontos
+                //Verifica se é o cabeçalho da matrizElaborada com o nome dos pontos
                 if (col.contains("'")) {
                     if (colunas.size() != arquivoTxt.getTamanhoMatrizGrafo())
                         throw new Exception();
@@ -75,42 +76,42 @@ public class LerEntradas {
                     continue;
                 }
 
-                //Verifica se é uma linhaTxt da matriz distancia
+                //Verifica se é uma linhaTxt da matrizElaborada distancia
                 if (!isRoute(colunas)) {
-                    Vertice ponto = vertices.get(colunaMatriz);
+                    Vertice ponto = vertices.get(tamanhoColunaMatriz);
                     List<Aresta> arestas = ponto.getArestas();
 
                     Integer distancia = Integer.valueOf(col);
 
-                    Aresta dist = new Aresta();
+                    Aresta novaAresta = new Aresta();
                     try {
-                        if (linhaMatriz == colunaMatriz && distancia != 0) {
+                        if (tamanhoLinhaMatriz == tamanhoColunaMatriz && distancia != 0) {
                             continue;
                         }
                     } catch (Exception e) {
                         System.out.println("A distancia do ponto " + ponto.getNome() + " é diferente de zero!");
                     }
 
-                    dist.setVerticeDestino(vertices.get(linhaMatriz).getNome());
-                    dist.setComprimento(distancia);
+                    novaAresta.setVerticeDestino(vertices.get(tamanhoLinhaMatriz).getNome());
+                    novaAresta.setComprimento(distancia);
 
-                    arestas.add(dist);
+                    arestas.add(novaAresta);
 
                     ponto.setArestas(arestas);
 
-                    matriz = true;
-                    colunaMatriz++;
+                    matrizElaborada = true;
+                    tamanhoColunaMatriz++;
                     continue;
                 }
 
-                //Verifica se é uma linhaTxt da matriz entregas
+                //Verifica se é uma linhaTxt da matrizElaborada entregas
             }
 
-            if (matriz) {
-                linhaMatriz++;
+            if (matrizElaborada) {
+                tamanhoLinhaMatriz++;
             }
         }
-        if (arquivoTxt.getTamanhoMatrizGrafo() != linhaMatriz)
+        if (arquivoTxt.getTamanhoMatrizGrafo() != tamanhoLinhaMatriz)
             throw new Exception();
 
         arquivoTxt.setVerticesMatrizGrafo(vertices);
