@@ -14,6 +14,10 @@ import java.util.List;
 public class LerEntradas {
     private static Entradas arquivoTxt;
 
+    /**
+     * Faz a leitura do arquivo, quebrando em linhas e colunas
+     */
+
     public Entradas lerArquivoTxt(String diretorio) throws Exception {
 
         arquivoTxt = new Entradas();
@@ -25,95 +29,108 @@ public class LerEntradas {
         List<Vertice> vertices = new ArrayList<>();
         List<PontoEntrega> pontosEntregas = new ArrayList<>();
 
-        int tamanhoLinhaMatriz = 0;
-        boolean matrizElaborada = false;
+        int linhaMatriz = 0;
+        boolean matriz = false;
 
         while ((linhaTxt = leituraDoBuffer.readLine()) != null) {
 
-            int tamanhoColunaMatriz = 0;
+            int colunaMatriz = 0;
 
             List<String> colunas = Arrays.asList(linhaTxt.split(","));
 
-            //Verifica se é o tamanho da matrizElaborada distancia
+            //Verifica se é o tamanho da matriz distancia
             if (colunas.size() == 1 && arquivoTxt.getTamanhoMatrizGrafo() == 0) {
                 arquivoTxt.setTamanhoMatrizGrafo(Integer.parseInt(colunas.get(0)));
                 continue;
             }
 
-            //Verifica se é o tamanho da matrizElaborada de entregas
+            //Verifica se é o tamanho da matriz de entregas
             if (colunas.size() == 1 && arquivoTxt.getTamanhoMatrizEntrega() == 0) {
                 arquivoTxt.setTamanhoMatrizEntrega(Integer.parseInt(colunas.get(0)));
                 continue;
             }
 
-            if (!linhaTxt.contains("'") && verificaSeLetra(colunas)) {
-                PontoEntrega rota = new PontoEntrega();
-                rota.setTempoSaida(Integer.parseInt(colunas.get(0)));
-                rota.setVerticeDestino(colunas.get(1));
-                rota.setBonus(Integer.parseInt(colunas.get(2)));
-                pontosEntregas.add(rota);
+            if (!linhaTxt.contains("'") && isRoute(colunas)) {
+                PontoEntrega caminho = new PontoEntrega();
+
+                caminho.setVerticeOrigem(Integer.parseInt(colunas.get(0)));
+                caminho.setVerticeDestino(colunas.get(1));
+                caminho.setBonus(Integer.parseInt(colunas.get(2)));
+
+                pontosEntregas.add(caminho);
                 continue;
             }
 
-            for (String coluna : colunas) {
+            for (String col : colunas) {
 
-                //Verifica se é o cabeçalho da matrizElaborada com o nome dos pontos
-                if (coluna.contains("'")) {
+                //Verifica se é o cabeçalho da matriz com o nome dos pontos
+                if (col.contains("'")) {
                     if (colunas.size() != arquivoTxt.getTamanhoMatrizGrafo())
                         throw new Exception();
 
-                    Vertice indiceColuna = new Vertice();
-                    indiceColuna.setNome(coluna.replaceAll("'", ""));
+                    Vertice ponto = new Vertice();
+                    ponto.setNome(col.replaceAll("'", ""));
 
-                    vertices.add(indiceColuna);
+                    vertices.add(ponto);
                     continue;
                 }
 
-                //Verifica se é uma linhaTxt da matrizElaborada distancia
-                if (!verificaSeLetra(colunas)) {
-                    Vertice ponto = vertices.get(tamanhoColunaMatriz);
+                //Verifica se é uma linhaTxt da matriz distancia
+                if (!isRoute(colunas)) {
+                    Vertice ponto = vertices.get(colunaMatriz);
                     List<Aresta> arestas = ponto.getArestas();
 
-                    Integer distancia = Integer.valueOf(coluna);
+                    Integer distancia = Integer.valueOf(col);
 
-                    Aresta novaAresta = new Aresta();
+                    Aresta dist = new Aresta();
                     try {
-                        if (tamanhoLinhaMatriz == tamanhoColunaMatriz && distancia != 0) {
+                        if (linhaMatriz == colunaMatriz && distancia != 0) {
                             continue;
                         }
                     } catch (Exception e) {
                         System.out.println("A distancia do ponto " + ponto.getNome() + " é diferente de zero!");
                     }
 
-                    novaAresta.setVerticeDestino(vertices.get(tamanhoLinhaMatriz).getNome());
-                    novaAresta.setComprimento(distancia);
+                    dist.setVerticeDestino(vertices.get(linhaMatriz).getNome());
+                    dist.setComprimento(distancia);
 
-                    arestas.add(novaAresta);
+                    arestas.add(dist);
 
                     ponto.setArestas(arestas);
 
-                    matrizElaborada = true;
-                    tamanhoColunaMatriz++;
+                    matriz = true;
+                    colunaMatriz++;
                     continue;
                 }
+
+                //Verifica se é uma linhaTxt da matriz entregas
             }
-            if (matrizElaborada) {
-                tamanhoLinhaMatriz++;
+
+            if (matriz) {
+                linhaMatriz++;
             }
         }
-        if (arquivoTxt.getTamanhoMatrizGrafo() != tamanhoLinhaMatriz)
+        if (arquivoTxt.getTamanhoMatrizGrafo() != linhaMatriz)
             throw new Exception();
+
         arquivoTxt.setVerticesMatrizGrafo(vertices);
         arquivoTxt.setVerticesMatrizEntrega(pontosEntregas);
+
         return arquivoTxt;
     }
 
-    private static boolean verificaSeLetra(List<String> colunas) {
-        for (String coluna : colunas) {
-            char[] posicao = coluna.toCharArray();
-            for (int i = 0; i < posicao.length; i++) {
-                if (Character.isAlphabetic(posicao[i]))
+    /**
+     * Verifica se parte analisada é um caracter alfabetico,
+     * caso seja, sinifica que é um ponto do grafo
+     */
+
+    private static boolean isRoute(List<String> partes) {
+        for (String parte : partes) {
+            char[] ps = parte.toCharArray();
+            for (int i = 0; i < ps.length; i++) {
+                if (Character.isAlphabetic(ps[i])) {
                     return true;
+                }
             }
         }
         return false;
