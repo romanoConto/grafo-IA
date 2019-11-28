@@ -2,18 +2,18 @@ package com.grafo.leiaoEntregas.models;
 
 public class PontoEntrega
 {
-	private int verticeOrigem	;
+	private int tempoSaida;
 	private String verticeDestino;
 	private int bonus;
 
-	public int getVerticeOrigem()
+	public int getTempoSaida()
 	{
-		return verticeOrigem;
+		return tempoSaida;
 	}
 
-	public void setVerticeOrigem(int verticeOrigem)
+	public void setTempoSaida(int tempoSaida)
 	{
-		this.verticeOrigem = verticeOrigem;
+		this.tempoSaida = tempoSaida;
 	}
 
 	public String getVerticeDestino()

@@ -81,7 +81,7 @@ public class GerarMatrizNxN {
             PontoEntrega pontoEntrega = new PontoEntrega();
             pontoEntrega.setBonus((i + 100) / 100);
             pontoEntrega.setVerticeDestino(nomesVertices.get(i));
-            pontoEntrega.setVerticeOrigem((i + 10) / 2);
+            pontoEntrega.setTempoSaida((i + 10) / 2);
             pontosEntrega.add(pontoEntrega);
         }
 
