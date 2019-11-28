@@ -5,7 +5,7 @@ import java.util.List;
 public class Entradas {
 
     private int tamanhoMatrizEntrada = 0;
-    private List<PontoGrafo> pontosEntrada;
+    private List<Vertice> pontosEntrada;
     private int tamanhoMatrizEntrega = 0;
     private List<PontoEntrega> pontosEntrega;
 
@@ -17,11 +17,11 @@ public class Entradas {
         this.tamanhoMatrizEntrada = tamanhoMatrizEntrada;
     }
 
-    public List<PontoGrafo> getPontosGrafo() {
+    public List<Vertice> getPontosGrafo() {
         return pontosEntrada;
     }
 
-    public void setPontosEntrada(List<PontoGrafo> pontosEntrada) {
+    public void setPontosEntrada(List<Vertice> pontosEntrada) {
         this.pontosEntrada = pontosEntrada;
     }
 

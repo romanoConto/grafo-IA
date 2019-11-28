@@ -1,9 +1,9 @@
 package com.grafo.leiaoEntregas.entradas;
 
-import com.grafo.leiaoEntregas.models.Distancia;
+import com.grafo.leiaoEntregas.models.Aresta;
 import com.grafo.leiaoEntregas.models.Entradas;
 import com.grafo.leiaoEntregas.models.PontoEntrega;
-import com.grafo.leiaoEntregas.models.PontoGrafo;
+import com.grafo.leiaoEntregas.models.Vertice;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class LerEntradas {
         BufferedReader lerArq = new BufferedReader(arquivo);
         String linha = null;
 
-        List<PontoGrafo> pontoGrafos = new ArrayList<>();
+        List<Vertice> vertices = new ArrayList<>();
         List<PontoEntrega> pontosEntregas = new ArrayList<>();
 
         int linhaMatriz = 0;
@@ -67,21 +67,21 @@ public class LerEntradas {
                     if(colunas.size() != entradas.getTamanhoMatrizEntrada())
                         throw new Exception();
 
-                    PontoGrafo ponto = new PontoGrafo();
+                    Vertice ponto = new Vertice();
                     ponto.setNome(col.replaceAll("'", ""));
 
-                    pontoGrafos.add(ponto);
+                    vertices.add(ponto);
                     continue;
                 }
 
                 //Verifica se é uma linha da matriz distancia
                 if (!isRoute(colunas)) {
-                    PontoGrafo ponto = pontoGrafos.get(colunaMatriz);
-                    List<Distancia> distancias = ponto.getDistancias();
+                    Vertice ponto = vertices.get(colunaMatriz);
+                    List<Aresta> arestas = ponto.getArestas();
 
                     Integer distancia = Integer.valueOf(col);
 
-                    Distancia dist = new Distancia();
+                    Aresta dist = new Aresta();
                     try{
                         if(linhaMatriz == colunaMatriz && distancia != 0)
                         {
@@ -92,12 +92,12 @@ public class LerEntradas {
                         System.out.println("A distancia do ponto " + ponto.getNome() + " é diferente de zero!");
                     }
 
-                    dist.setNome(pontoGrafos.get(linhaMatriz).getNome());
-                    dist.setDistancia(distancia);
+                    dist.setVerticeDestino(vertices.get(linhaMatriz).getNome());
+                    dist.setComprimento(distancia);
 
-                    distancias.add(dist);
+                    arestas.add(dist);
 
-                    ponto.setDistancias(distancias);
+                    ponto.setArestas(arestas);
 
                     matriz = true;
                     colunaMatriz++;
@@ -114,7 +114,7 @@ public class LerEntradas {
         if(entradas.getTamanhoMatrizEntrada() != linhaMatriz)
             throw new Exception();
 
-        entradas.setPontosEntrada(pontoGrafos);
+        entradas.setPontosEntrada(vertices);
         entradas.setPontosEntrega(pontosEntregas);
 
         return entradas;

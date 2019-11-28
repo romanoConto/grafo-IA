@@ -3,11 +3,10 @@ package com.grafo.leiaoEntregas.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PontoGrafo
+public class Vertice
 {
-
     private String nome;
-    private List<Distancia> distancias = new ArrayList<>();
+    private List<Aresta> arestas = new ArrayList<>();
 
     public String getNome() {
         return nome;
@@ -17,11 +16,11 @@ public class PontoGrafo
         this.nome = nome;
     }
 
-    public List<Distancia> getDistancias() {
-        return distancias;
+    public List<Aresta> getArestas() {
+        return arestas;
     }
 
-    public void setDistancias(List<Distancia> distancias) {
-        this.distancias = distancias;
+    public void setArestas(List<Aresta> arestas) {
+        this.arestas = arestas;
     }
 }

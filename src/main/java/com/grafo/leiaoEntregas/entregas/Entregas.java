@@ -1,9 +1,9 @@
 package com.grafo.leiaoEntregas.entregas;
 
-import com.grafo.leiaoEntregas.models.Distancia;
+import com.grafo.leiaoEntregas.models.Aresta;
 import com.grafo.leiaoEntregas.models.Entradas;
 import com.grafo.leiaoEntregas.models.PontoEntrega;
-import com.grafo.leiaoEntregas.models.PontoGrafo;
+import com.grafo.leiaoEntregas.models.Vertice;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class Entregas
 		for (PontoEntrega pontoEntrega : pontoEntregas)
 		{
 			//Captura o primeiro ponto (A)
-			PontoGrafo pontoAtual = entradas.getPontosGrafo().get(0);
+			Vertice pontoAtual = entradas.getPontosGrafo().get(0);
 			Rota rota = new Rota();
 			rota.setDistancia(0);
 			rota.setRecompensa(0);
@@ -51,7 +51,7 @@ public class Entregas
 	 * Retorna a menor rota encontrada
 	 */
 
-	private RotasEntrega retornaRotas(PontoGrafo pontoAtual, Rota rota, List<String> pontosVerificados)
+	private RotasEntrega retornaRotas(Vertice pontoAtual, Rota rota, List<String> pontosVerificados)
 		throws CloneNotSupportedException
 	{
 		List<Rota> possiveisRotas = getPossiveisRotas(pontoAtual, rota, pontosVerificados);
@@ -71,8 +71,8 @@ public class Entregas
 		return re;
 	}
 
-	private List<Rota> getPossiveisRotas(PontoGrafo pontoAtual, Rota rota,
-		List<String> pontosVerificados) throws CloneNotSupportedException
+	private List<Rota> getPossiveisRotas(Vertice pontoAtual, Rota rota,
+										 List<String> pontosVerificados) throws CloneNotSupportedException
 	{
 		return getPossiveisRotas(pontoAtual, rota, pontosVerificados, null);
 	}
@@ -81,8 +81,8 @@ public class Entregas
 	 * Retorna as possiveis rotas encontradas
 	 */
 
-	private List<Rota> getPossiveisRotas(PontoGrafo pontoAtual, Rota rotaAnt,
-		List<String> pontosVerificados, Distancia distAnt) throws CloneNotSupportedException
+	private List<Rota> getPossiveisRotas(Vertice pontoAtual, Rota rotaAnt,
+										 List<String> pontosVerificados, Aresta distAnt) throws CloneNotSupportedException
 	{
 		//Cria uma nova rota com base na rota anterior (rotaAnt)
 		Rota rota = new Rota();
@@ -91,10 +91,10 @@ public class Entregas
 		rota.setDistancia(rotaAnt.getDistancia());
 		rota.setDestino(rotaAnt.getDestino());
 
-		if (distAnt != null && !rota.getPontos().contains(distAnt.getNome()))
+		if (distAnt != null && !rota.getPontos().contains(distAnt.getVerticeDestino()))
 		{
-			rota.addPonto(distAnt.getNome());
-			rota.addDistancia(distAnt.getDistancia());
+			rota.addPonto(distAnt.getVerticeDestino());
+			rota.addDistancia(distAnt.getComprimento());
 		}
 
 		List<Rota> rotasPonto = new ArrayList<>();
@@ -104,17 +104,17 @@ public class Entregas
 			pontosVerificados = new ArrayList<>();
 		}
 
-		for (Distancia dist : pontoAtual.getDistancias())
+		for (Aresta dist : pontoAtual.getArestas())
 		{
 			//Verifica se ja passou pela rota ou seja alcançavel
-			if (pontosVerificados.stream().anyMatch(x -> x.equals(dist.getNome()))
-				|| dist.getDistancia() == 0)
+			if (pontosVerificados.stream().anyMatch(x -> x.equals(dist.getVerticeDestino()))
+				|| dist.getComprimento() == 0)
 			{
 				continue;
 			}
 
 			//Encontrei meu ponto de destino
-			if (dist.getNome().equals(rota.getDestino()))
+			if (dist.getVerticeDestino().equals(rota.getDestino()))
 			{
 				//Crio uma nova rota setando o ponto
 				Rota r = new Rota();
@@ -123,9 +123,9 @@ public class Entregas
 				r.setRecompensa(rota.getRecompensa());
 				r.setDistancia(rota.getDistancia());
 
-				r.addPonto(dist.getNome());
-				r.addDistancia(dist.getDistancia());
-				r.setRecompensa(getBonus(dist.getNome()));
+				r.addPonto(dist.getVerticeDestino());
+				r.addDistancia(dist.getComprimento());
+				r.setRecompensa(getBonus(dist.getVerticeDestino()));
 				rotasPonto.add(r);
 
 				continue;
@@ -136,7 +136,7 @@ public class Entregas
 			for (String p : rota.getPontos())
 				pontosVerfi.add(p);
 
-			PontoGrafo ponto = getPonto(dist.getNome());
+			Vertice ponto = getPonto(dist.getVerticeDestino());
 			List<Rota> r = getPossiveisRotas(ponto, rota, pontosVerfi, dist);
 			if (r != null)
 			{
@@ -150,9 +150,9 @@ public class Entregas
 	 * Retorna um ponto do grafo (objeto)
 	 */
 
-	private PontoGrafo getPonto(String name)
+	private Vertice getPonto(String name)
 	{
-		for (PontoGrafo p : entradas.getPontosGrafo())
+		for (Vertice p : entradas.getPontosGrafo())
 		{
 			if (p.getNome().equals(name))
 			{
