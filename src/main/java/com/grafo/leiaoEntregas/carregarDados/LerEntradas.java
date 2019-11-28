@@ -1,9 +1,10 @@
-package com.grafo.leiaoEntregas.entradas;
+package com.grafo.leiaoEntregas.carregarDados;
 
 import com.grafo.leiaoEntregas.models.Aresta;
 import com.grafo.leiaoEntregas.models.Entradas;
 import com.grafo.leiaoEntregas.models.PontoEntrega;
 import com.grafo.leiaoEntregas.models.Vertice;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class LerEntradas {
 
                 //Verifica se é o cabeçalho da matriz com o nome dos pontos
                 if (col.contains("'")) {
-                    if(colunas.size() != arquivoTxt.getTamanhoMatrizGrafo())
+                    if (colunas.size() != arquivoTxt.getTamanhoMatrizGrafo())
                         throw new Exception();
 
                     Vertice ponto = new Vertice();
@@ -82,13 +83,11 @@ public class LerEntradas {
                     Integer distancia = Integer.valueOf(col);
 
                     Aresta dist = new Aresta();
-                    try{
-                        if(linhaMatriz == colunaMatriz && distancia != 0)
-                        {
+                    try {
+                        if (linhaMatriz == colunaMatriz && distancia != 0) {
                             continue;
                         }
-                    } catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         System.out.println("A distancia do ponto " + ponto.getNome() + " é diferente de zero!");
                     }
 
@@ -111,7 +110,7 @@ public class LerEntradas {
                 linhaMatriz++;
             }
         }
-        if(arquivoTxt.getTamanhoMatrizGrafo() != linhaMatriz)
+        if (arquivoTxt.getTamanhoMatrizGrafo() != linhaMatriz)
             throw new Exception();
 
         arquivoTxt.setVerticesMatrizGrafo(vertices);

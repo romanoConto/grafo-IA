@@ -1,4 +1,4 @@
-package com.grafo.leiaoEntregas.entregas;
+package com.grafo.leiaoEntregas.entregas.calculoProfundidade;
 
 import java.util.ArrayList;
 import java.util.List;
