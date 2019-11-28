@@ -11,19 +11,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LerEntradas {
-    private static Entradas entradas;
+    private static Entradas arquivoTxt;
 
     /**
      * Faz a leitura do arquivo, quebrando em linhas e colunas
      */
 
-    public Entradas readFile(String path) throws Exception {
+    public Entradas lerArquivoTxt(String diretorio) throws Exception {
 
-        entradas = new Entradas();
+        arquivoTxt = new Entradas();
 
-        FileReader arquivo = new FileReader(path);
-        BufferedReader lerArq = new BufferedReader(arquivo);
-        String linha = null;
+        FileReader arquivo = new FileReader(diretorio);
+        BufferedReader leituraDoBuffer = new BufferedReader(arquivo);
+        String linhaTxt = null;
 
         List<Vertice> vertices = new ArrayList<>();
         List<PontoEntrega> pontosEntregas = new ArrayList<>();
@@ -31,25 +31,25 @@ public class LerEntradas {
         int linhaMatriz = 0;
         boolean matriz = false;
 
-        while ((linha = lerArq.readLine()) != null) {
+        while ((linhaTxt = leituraDoBuffer.readLine()) != null) {
 
             int colunaMatriz = 0;
 
-            List<String> colunas = Arrays.asList(linha.split(","));
+            List<String> colunas = Arrays.asList(linhaTxt.split(","));
 
             //Verifica se é o tamanho da matriz distancia
-            if (colunas.size() == 1 && entradas.getTamanhoMatrizGrafo() == 0) {
-                entradas.setTamanhoMatrizGrafo(Integer.parseInt(colunas.get(0)));
+            if (colunas.size() == 1 && arquivoTxt.getTamanhoMatrizGrafo() == 0) {
+                arquivoTxt.setTamanhoMatrizGrafo(Integer.parseInt(colunas.get(0)));
                 continue;
             }
 
             //Verifica se é o tamanho da matriz de entregas
-            if (colunas.size() == 1 && entradas.getTamanhoMatrizEntrega() == 0) {
-                entradas.setTamanhoMatrizEntrega(Integer.parseInt(colunas.get(0)));
+            if (colunas.size() == 1 && arquivoTxt.getTamanhoMatrizEntrega() == 0) {
+                arquivoTxt.setTamanhoMatrizEntrega(Integer.parseInt(colunas.get(0)));
                 continue;
             }
 
-            if (!linha.contains("'") && isRoute(colunas)) {
+            if (!linhaTxt.contains("'") && isRoute(colunas)) {
                 PontoEntrega caminho = new PontoEntrega();
 
                 caminho.setVerticeOrigem(Integer.parseInt(colunas.get(0)));
@@ -64,7 +64,7 @@ public class LerEntradas {
 
                 //Verifica se é o cabeçalho da matriz com o nome dos pontos
                 if (col.contains("'")) {
-                    if(colunas.size() != entradas.getTamanhoMatrizGrafo())
+                    if(colunas.size() != arquivoTxt.getTamanhoMatrizGrafo())
                         throw new Exception();
 
                     Vertice ponto = new Vertice();
@@ -74,7 +74,7 @@ public class LerEntradas {
                     continue;
                 }
 
-                //Verifica se é uma linha da matriz distancia
+                //Verifica se é uma linhaTxt da matriz distancia
                 if (!isRoute(colunas)) {
                     Vertice ponto = vertices.get(colunaMatriz);
                     List<Aresta> arestas = ponto.getArestas();
@@ -104,20 +104,20 @@ public class LerEntradas {
                     continue;
                 }
 
-                //Verifica se é uma linha da matriz entregas
+                //Verifica se é uma linhaTxt da matriz entregas
             }
 
             if (matriz) {
                 linhaMatriz++;
             }
         }
-        if(entradas.getTamanhoMatrizGrafo() != linhaMatriz)
+        if(arquivoTxt.getTamanhoMatrizGrafo() != linhaMatriz)
             throw new Exception();
 
-        entradas.setVerticesMatrizGrafo(vertices);
-        entradas.setVerticesMatrizEntrega(pontosEntregas);
+        arquivoTxt.setVerticesMatrizGrafo(vertices);
+        arquivoTxt.setVerticesMatrizEntrega(pontosEntregas);
 
-        return entradas;
+        return arquivoTxt;
     }
 
     /**

@@ -162,7 +162,7 @@ public class Gerenciador {
     private static void ReadFile() {
         try {
             LerEntradas read = new LerEntradas();
-            entradas = read.readFile(path);
+            entradas = read.lerArquivoTxt(path);
         } catch (Exception e) {
             System.out.println("Formato de arquivo inválido!");
         }
