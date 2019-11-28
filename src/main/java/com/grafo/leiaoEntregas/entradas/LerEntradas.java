@@ -38,8 +38,8 @@ public class LerEntradas {
             List<String> colunas = Arrays.asList(linha.split(","));
 
             //Verifica se é o tamanho da matriz distancia
-            if (colunas.size() == 1 && entradas.getTamanhoMatrizEntrada() == 0) {
-                entradas.setTamanhoMatrizEntrada(Integer.parseInt(colunas.get(0)));
+            if (colunas.size() == 1 && entradas.getTamanhoMatrizGrafo() == 0) {
+                entradas.setTamanhoMatrizGrafo(Integer.parseInt(colunas.get(0)));
                 continue;
             }
 
@@ -52,8 +52,8 @@ public class LerEntradas {
             if (!linha.contains("'") && isRoute(colunas)) {
                 PontoEntrega caminho = new PontoEntrega();
 
-                caminho.setPartida(Integer.parseInt(colunas.get(0)));
-                caminho.setDestino(colunas.get(1));
+                caminho.setVerticeOrigem(Integer.parseInt(colunas.get(0)));
+                caminho.setVerticeDestino(colunas.get(1));
                 caminho.setBonus(Integer.parseInt(colunas.get(2)));
 
                 pontosEntregas.add(caminho);
@@ -64,7 +64,7 @@ public class LerEntradas {
 
                 //Verifica se é o cabeçalho da matriz com o nome dos pontos
                 if (col.contains("'")) {
-                    if(colunas.size() != entradas.getTamanhoMatrizEntrada())
+                    if(colunas.size() != entradas.getTamanhoMatrizGrafo())
                         throw new Exception();
 
                     Vertice ponto = new Vertice();
@@ -111,11 +111,11 @@ public class LerEntradas {
                 linhaMatriz++;
             }
         }
-        if(entradas.getTamanhoMatrizEntrada() != linhaMatriz)
+        if(entradas.getTamanhoMatrizGrafo() != linhaMatriz)
             throw new Exception();
 
-        entradas.setPontosEntrada(vertices);
-        entradas.setPontosEntrega(pontosEntregas);
+        entradas.setVerticesMatrizGrafo(vertices);
+        entradas.setVerticesMatrizEntrega(pontosEntregas);
 
         return entradas;
     }

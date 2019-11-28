@@ -4,25 +4,25 @@ import java.util.List;
 
 public class Entradas {
 
-    private int tamanhoMatrizEntrada = 0;
-    private List<Vertice> pontosEntrada;
+    private int tamanhoMatrizGrafo = 0;
+    private List<Vertice> verticesMatrizGrafo;
     private int tamanhoMatrizEntrega = 0;
-    private List<PontoEntrega> pontosEntrega;
+    private List<PontoEntrega> verticesMatrizEntrega;
 
-    public int getTamanhoMatrizEntrada() {
-        return tamanhoMatrizEntrada;
+    public int getTamanhoMatrizGrafo() {
+        return tamanhoMatrizGrafo;
     }
 
-    public void setTamanhoMatrizEntrada(int tamanhoMatrizEntrada) {
-        this.tamanhoMatrizEntrada = tamanhoMatrizEntrada;
+    public void setTamanhoMatrizGrafo(int tamanhoMatrizGrafo) {
+        this.tamanhoMatrizGrafo = tamanhoMatrizGrafo;
     }
 
-    public List<Vertice> getPontosGrafo() {
-        return pontosEntrada;
+    public List<Vertice> getVerticesMatrizGrafo() {
+        return verticesMatrizGrafo;
     }
 
-    public void setPontosEntrada(List<Vertice> pontosEntrada) {
-        this.pontosEntrada = pontosEntrada;
+    public void setVerticesMatrizGrafo(List<Vertice> verticesMatrizGrafo) {
+        this.verticesMatrizGrafo = verticesMatrizGrafo;
     }
 
     public int getTamanhoMatrizEntrega() {
@@ -33,11 +33,11 @@ public class Entradas {
         this.tamanhoMatrizEntrega = tamanhoMatrizEntrega;
     }
 
-    public List<PontoEntrega> getPontosEntrega() {
-        return pontosEntrega;
+    public List<PontoEntrega> getVerticesMatrizEntrega() {
+        return verticesMatrizEntrega;
     }
 
-    public void setPontosEntrega(List<PontoEntrega> pontosEntrega) {
-        this.pontosEntrega = pontosEntrega;
+    public void setVerticesMatrizEntrega(List<PontoEntrega> verticesMatrizEntrega) {
+        this.verticesMatrizEntrega = verticesMatrizEntrega;
     }
 }

@@ -23,16 +23,16 @@ public class Entregas
 
 	public List<RotasEntrega> processarEntregas() throws CloneNotSupportedException
 	{
-		List<PontoEntrega> pontoEntregas = entradas.getPontosEntrega();
+		List<PontoEntrega> pontoEntregas = entradas.getVerticesMatrizEntrega();
 
 		for (PontoEntrega pontoEntrega : pontoEntregas)
 		{
 			//Captura o primeiro ponto (A)
-			Vertice pontoAtual = entradas.getPontosGrafo().get(0);
+			Vertice pontoAtual = entradas.getVerticesMatrizGrafo().get(0);
 			Rota rota = new Rota();
 			rota.setDistancia(0);
 			rota.setRecompensa(0);
-			rota.setDestino(pontoEntrega.getDestino());
+			rota.setDestino(pontoEntrega.getVerticeDestino());
 			rota.addPonto(pontoAtual.getNome());
 
 			//Solicita as rotas
@@ -152,7 +152,7 @@ public class Entregas
 
 	private Vertice getPonto(String name)
 	{
-		for (Vertice p : entradas.getPontosGrafo())
+		for (Vertice p : entradas.getVerticesMatrizGrafo())
 		{
 			if (p.getNome().equals(name))
 			{
@@ -177,9 +177,9 @@ public class Entregas
 
 	private PontoEntrega getEntrega(String name)
 	{
-		for (PontoEntrega p : entradas.getPontosEntrega())
+		for (PontoEntrega p : entradas.getVerticesMatrizEntrega())
 		{
-			if (p.getDestino().equals(name))
+			if (p.getVerticeDestino().equals(name))
 			{
 				return p;
 			}

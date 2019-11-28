@@ -2,28 +2,28 @@ package com.grafo.leiaoEntregas.models;
 
 public class PontoEntrega
 {
-	private int partida;
-	private String destino;
+	private int verticeOrigem	;
+	private String verticeDestino;
 	private int bonus;
 
-	public int getPartida()
+	public int getVerticeOrigem()
 	{
-		return partida;
+		return verticeOrigem;
 	}
 
-	public void setPartida(int partida)
+	public void setVerticeOrigem(int verticeOrigem)
 	{
-		this.partida = partida;
+		this.verticeOrigem = verticeOrigem;
 	}
 
-	public String getDestino()
+	public String getVerticeDestino()
 	{
-		return destino;
+		return verticeDestino;
 	}
 
-	public void setDestino(String destino)
+	public void setVerticeDestino(String verticeDestino)
 	{
-		this.destino = destino;
+		this.verticeDestino = verticeDestino;
 	}
 
 	public int getBonus()
