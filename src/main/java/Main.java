@@ -1,5 +1,3 @@
-package com.grafo.leiaoEntregas;
-
 import com.grafo.leiaoEntregas.gerenciador.Gerenciador;
 
 public class Main {
