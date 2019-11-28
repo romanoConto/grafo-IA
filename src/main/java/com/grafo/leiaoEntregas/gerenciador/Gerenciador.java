@@ -33,46 +33,49 @@ public class Gerenciador {
 
         Scanner ler = new Scanner(System.in);
         int iniciar;
-
-        menuArquivos();
         while (true) {
-            System.out.println("\n=================== =================== LEILÃO DE ENTREGAS =================== ===================");
-            System.out.println("1 - Carregar Entradas ");
-            System.out.println("2 - Calcular Entregas Busca Profunda");
-            System.out.println("3 - Calcular Entregas Busca Profunda + Threads");
-            System.out.println("4 - Calcular Entregas IA");
-            System.out.println("5 - Calcular Entregas IA + Threads");
-            System.out.println("6 - Mostrar Rotas ");
-            System.out.println("7 - Limpar tela ");
-            System.out.println("0 - Sair ");
-            iniciar = ler.nextInt();
 
-            switch (iniciar) {
-                case 1:
-                    menuArquivos();
-                    break;
-                case 2:
-                    calcRoute();
-                    break;
-                case 3:
-                    calcRouteThread();
-                    break;
-                case 4:
-                    calcRouteIA();
-                    break;
-                case 5:
-                    calcRouteIAThread();
-                    break;
-                case 6:
-                    showRoute();
-                    break;
-                case 7:
-                    limpaTela();
-                    break;
-                case 0:
-                    System.out.println("Saindo ...");
-                    System.exit(0);
-                    break;
+            try {
+                System.out.println("\n=================== =================== LEILÃO DE ENTREGAS =================== ===================");
+                System.out.println("1 - Carregar Entradas ");
+                System.out.println("2 - Calcular Entregas Busca Profunda");
+                System.out.println("3 - Calcular Entregas Busca Profunda + Threads");
+                System.out.println("4 - Calcular Entregas IA");
+                System.out.println("5 - Calcular Entregas IA + Threads");
+                System.out.println("6 - Mostrar Rotas ");
+                System.out.println("7 - Limpar tela ");
+                System.out.println("0 - Sair ");
+                iniciar = ler.nextInt();
+
+                switch (iniciar) {
+                    case 1:
+                        menuArquivos();
+                        break;
+                    case 2:
+                        calcRoute();
+                        break;
+                    case 3:
+                        calcRouteThread();
+                        break;
+                    case 4:
+                        calcRouteIA();
+                        break;
+                    case 5:
+                        calcRouteIAThread();
+                        break;
+                    case 6:
+                        showRoute();
+                        break;
+                    case 7:
+                        limpaTela();
+                        break;
+                    case 0:
+                        System.out.println("Saindo ...");
+                        System.exit(0);
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Ops! Ocorreu algo errado, tente novamente.");
             }
         }
     }
@@ -119,7 +122,10 @@ public class Gerenciador {
             case 6:
                 System.out.println("Informe o tamanho da matriz:");
                 iniciar = ler.nextInt();
-                entradas = GerarMatrizNxN.getMatriz(iniciar);
+                System.out.println("Informe a complexidade da matriz.");
+                System.out.println("1 a 25 pouco complexo, 26 a 50 complexo, 51 a 75 muito complexo.");
+                Float f = ler.nextFloat();
+                entradas = GerarMatrizNxN.getMatriz(iniciar, f);
                 break;
 
             case 0:

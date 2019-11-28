@@ -12,7 +12,7 @@ import java.util.Random;
 public class GerarMatrizNxN {
     private static Entradas matriz;
 
-    public static Entradas getMatriz(int tamanho) {
+    public static Entradas getMatriz(int tamanho, Float f) {
         matriz = new Entradas();
         List<PontoEntrega> pontosEntrega = new ArrayList<>();
         List<Vertice> pontosGrafo = new ArrayList<>();
@@ -47,11 +47,28 @@ public class GerarMatrizNxN {
 
             for (int j = 0; j < tamanho; j++) {
                 Aresta a = new Aresta();
-                if (i == j || getRandomBoolean()) {
+
+                double complexidade = f > 75 ? 37 : f/2;
+                if (tamanho > 500 && f > 37)
+                    complexidade = f + (100 - (f)) - (15000 / tamanho);
+                complexidade = 1 - (complexidade / 100);
+
+                int maxArestas = 0;
+                if(tamanho < 50)
+                 maxArestas = 10;
+                else if(tamanho < 100)
+                    maxArestas = 7;
+                else if(tamanho < 500)
+                    maxArestas = 6;
+                else if(tamanho < 1000)
+                    maxArestas = 5;
+                else
+                    maxArestas = 3;
+                if (i == j || getRandomBoolean(complexidade) || Math.abs(i - j) > maxArestas) {
                     a.setComprimento(0);
                 } else {
-                    Random r = new Random(20);
-                    a.setComprimento(r.nextInt());
+                    Random r = new Random();
+                    a.setComprimento(r.nextInt(20));
                 }
                 a.setVerticeDestino(nomesVertices.get(j));
                 arestas.add(a);
@@ -60,7 +77,7 @@ public class GerarMatrizNxN {
             pontosGrafo.add(v);
         }
 
-        for (int i = 1; i < tamanho; i++) {
+        for (int i = 1; i < tamanho; i += 2) {
             PontoEntrega pontoEntrega = new PontoEntrega();
             pontoEntrega.setBonus((i + 100) / 100);
             pontoEntrega.setVerticeDestino(nomesVertices.get(i));
@@ -82,6 +99,7 @@ public class GerarMatrizNxN {
         ints.add(a1);
         ints.add(a2);
         ints.add(a3);
+        ints.add(a4);
         ints.add(4);
         String name = "";
         for (Integer i : ints) {
@@ -93,9 +111,8 @@ public class GerarMatrizNxN {
         return name;
     }
 
-    public static boolean getRandomBoolean() {
-        return Math.random() < 0.98;
-        //I tried another approaches here, still the same result
+    public static boolean getRandomBoolean(double f) {
+        return Math.random() < f;
     }
 }
 
