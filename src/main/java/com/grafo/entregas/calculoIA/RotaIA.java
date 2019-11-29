@@ -1,9 +1,10 @@
-package com.grafo.leiaoEntregas.entregas.calculoIA;
+package com.grafo.entregas.calculoIA;
 
-import com.grafo.leiaoEntregas.entregas.calculoProfundidade.Rota;
-import com.grafo.leiaoEntregas.models.Vertice;
+import com.grafo.entregas.calculoProfundidade.Rota;
+import com.grafo.models.Vertice;
 
-public class RotaIA extends Rota {
+public class RotaIA extends Rota
+{
     private Vertice verticeAtual;
 
     public Vertice getVerticeAtual() {

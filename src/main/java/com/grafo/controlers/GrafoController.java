@@ -1,10 +1,10 @@
-package com.grafo.leiaoEntregas.controlers;
+package com.grafo.controlers;
 
-import com.grafo.leiaoEntregas.carregarDados.LerEntradas;
-import com.grafo.leiaoEntregas.entregas.calculoIA.EntregasIA;
-import com.grafo.leiaoEntregas.entregas.calculoProfundidade.Entregas;
-import com.grafo.leiaoEntregas.models.Entradas;
-import com.grafo.leiaoEntregas.models.RotasEntrega;
+import com.grafo.entregas.calculoProfundidade.Entregas;
+import com.grafo.carregarDados.LerEntradas;
+import com.grafo.entregas.calculoIA.EntregasIA;
+import com.grafo.models.Entradas;
+import com.grafo.models.RotasEntrega;
 import org.json.JSONObject;
 
 import java.util.ArrayList;

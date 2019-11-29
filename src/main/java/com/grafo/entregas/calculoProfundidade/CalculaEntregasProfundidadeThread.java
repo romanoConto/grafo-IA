@@ -1,10 +1,10 @@
-package com.grafo.leiaoEntregas.entregas.calculoProfundidade;
+package com.grafo.entregas.calculoProfundidade;
 
-import com.grafo.leiaoEntregas.entregas.CalculaEntregasUtils;
-import com.grafo.leiaoEntregas.models.Aresta;
-import com.grafo.leiaoEntregas.models.Entradas;
-import com.grafo.leiaoEntregas.models.RotasEntrega;
-import com.grafo.leiaoEntregas.models.Vertice;
+import com.grafo.entregas.CalculaEntregasUtils;
+import com.grafo.models.Aresta;
+import com.grafo.models.Entradas;
+import com.grafo.models.RotasEntrega;
+import com.grafo.models.Vertice;
 
 import java.util.ArrayList;
 import java.util.List;

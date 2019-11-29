@@ -1,12 +1,12 @@
-package com.grafo.leiaoEntregas.servicos;
+package com.grafo.servicos;
 
-import com.grafo.leiaoEntregas.controlers.GrafoController;
+import com.grafo.controlers.GrafoController;
 import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
-@Path("/grafo-entregas")
+@Path("/grafo")
 public class GrafoEntregasRest {
 
     @GET

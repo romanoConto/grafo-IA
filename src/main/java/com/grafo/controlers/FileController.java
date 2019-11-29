@@ -1,4 +1,4 @@
-package com.grafo.leiaoEntregas.controlers;
+package com.grafo.controlers;
 
 import org.json.JSONObject;
 

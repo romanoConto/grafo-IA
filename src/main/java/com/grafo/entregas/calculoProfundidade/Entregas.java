@@ -1,9 +1,7 @@
-package com.grafo.leiaoEntregas.entregas.calculoProfundidade;
+package com.grafo.entregas.calculoProfundidade;
 
-import com.grafo.leiaoEntregas.entregas.CalculaEntregasUtils;
-import com.grafo.leiaoEntregas.entregas.calculoIA.CalculaRotaEntregaIAThread;
-import com.grafo.leiaoEntregas.entregas.calculoIA.RotaIA;
-import com.grafo.leiaoEntregas.models.*;
+import com.grafo.entregas.CalculaEntregasUtils;
+import com.grafo.models.*;
 
 import java.util.ArrayList;
 import java.util.List;

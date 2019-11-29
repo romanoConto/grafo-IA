@@ -1,4 +1,4 @@
-import com.grafo.leiaoEntregas.gerenciador.Gerenciador;
+import com.grafo.gerenciador.Gerenciador;
 
 public class Main {
 
