@@ -74,7 +74,6 @@ public class Entregas {
     public List<RotasEntrega> processarEntregas() throws CloneNotSupportedException {
         List<PontoEntrega> pontoEntregas = entradas.getVerticesMatrizEntrega();
 
-
         for (PontoEntrega pontoEntrega : pontoEntregas) {
             //Captura o primeiro ponto (A)
             Vertice pontoAtual = entradas.getVerticesMatrizGrafo().get(0);

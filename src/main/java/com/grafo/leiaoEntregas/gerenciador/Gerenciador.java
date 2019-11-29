@@ -8,7 +8,6 @@ import com.grafo.leiaoEntregas.models.Entradas;
 import com.grafo.leiaoEntregas.carregarDados.LerEntradas;
 import com.grafo.leiaoEntregas.models.RotasEntrega;
 
-import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,22 +51,22 @@ public class Gerenciador {
                         menuArquivos();
                         break;
                     case 2:
-                        calcRoute();
+                        calcularRota();
                         break;
                     case 3:
                         calcRouteThread();
                         break;
                     case 4:
-                        calcRouteIA();
+                        calcularRotaIA();
                         break;
                     case 5:
                         calcRouteIAThread();
                         break;
                     case 6:
-                        showRoute();
+                        mostrarRota();
                         break;
                     case 7:
-                        limpaTela();
+                        limparTela();
                         break;
                     case 0:
                         System.out.println("Saindo ...");
@@ -137,7 +136,7 @@ public class Gerenciador {
      * Mostra as rotas alternativas e a rota principal
      */
 
-    private void showRoute() {
+    private void mostrarRota() {
         int cont = 1;
         int recompensa = 0;
         System.out.println("\n=================== =================== #Entregas do dia# =================== ===================");
@@ -216,7 +215,7 @@ public class Gerenciador {
      * Faz o calculo das entregas retornando as rotas
      */
 
-    private static void calcRoute() throws CloneNotSupportedException {
+    private static void calcularRota() throws CloneNotSupportedException {
         start = new Date();
         Entregas matriz = new Entregas(entradas);
         rotas = matriz.processarEntregas();
@@ -230,7 +229,7 @@ public class Gerenciador {
         finish = new Date();
     }
 
-    private static void calcRouteIA() throws CloneNotSupportedException {
+    private static void calcularRotaIA() throws CloneNotSupportedException {
         start = new Date();
         EntregasIA matriz = new EntregasIA(entradas);
         rotas = matriz.processarEntregas();
@@ -244,7 +243,7 @@ public class Gerenciador {
         finish = new Date();
     }
 
-    private static void limpaTela() throws IOException {
+    private static void limparTela() throws IOException {
         for (int i = 0; i < 100; ++i)
             System.out.println();
     }

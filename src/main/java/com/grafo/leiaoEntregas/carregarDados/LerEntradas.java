@@ -14,23 +14,18 @@ import java.util.List;
 public class LerEntradas {
     private static Entradas arquivoTxt;
 
-    /**
-     * Faz a leitura do arquivo, quebrando em linhas e colunas
-     */
-
     public Entradas lerArquivoTxt(String diretorio) throws Exception {
 
         arquivoTxt = new Entradas();
 
         FileReader arquivo = new FileReader(diretorio);
         BufferedReader leituraDoBuffer = new BufferedReader(arquivo);
-        String linhaTxt = null;
 
+        String linhaTxt = null;
         List<Vertice> vertices = new ArrayList<>();
         List<PontoEntrega> pontosEntregas = new ArrayList<>();
-
         int linhaMatriz = 0;
-        boolean matriz = false;
+        boolean matrizElaborada = false;
 
         while ((linhaTxt = leituraDoBuffer.readLine()) != null) {
 
@@ -38,51 +33,50 @@ public class LerEntradas {
 
             List<String> colunas = Arrays.asList(linhaTxt.split(","));
 
-            //Verifica se é o tamanho da matriz distancia
+            //Verifica se é o tamanho da matrizElaborada distancia
             if (colunas.size() == 1 && arquivoTxt.getTamanhoMatrizGrafo() == 0) {
                 arquivoTxt.setTamanhoMatrizGrafo(Integer.parseInt(colunas.get(0)));
                 continue;
             }
 
-            //Verifica se é o tamanho da matriz de entregas
+            //Verifica se é o tamanho da matrizElaborada de entregas
             if (colunas.size() == 1 && arquivoTxt.getTamanhoMatrizEntrega() == 0) {
                 arquivoTxt.setTamanhoMatrizEntrega(Integer.parseInt(colunas.get(0)));
                 continue;
             }
 
-            if (!linhaTxt.contains("'") && isRoute(colunas)) {
-                PontoEntrega caminho = new PontoEntrega();
+            if (!linhaTxt.contains("'") && verificaSeLetra(colunas)) {
+                PontoEntrega rota = new PontoEntrega();
 
-                caminho.setVerticeOrigem(Integer.parseInt(colunas.get(0)));
-                caminho.setVerticeDestino(colunas.get(1));
-                caminho.setBonus(Integer.parseInt(colunas.get(2)));
-
-                pontosEntregas.add(caminho);
+                rota.setTempoSaida(Integer.parseInt(colunas.get(0)));
+                rota.setVerticeDestino(colunas.get(1));
+                rota.setBonus(Integer.parseInt(colunas.get(2)));
+                pontosEntregas.add(rota);
                 continue;
             }
 
-            for (String col : colunas) {
+            for (String coluna : colunas) {
 
-                //Verifica se é o cabeçalho da matriz com o nome dos pontos
-                if (col.contains("'")) {
+                //Verifica se é o cabeçalho da matrizElaborada com o nome dos pontos
+                if (coluna.contains("'")) {
                     if (colunas.size() != arquivoTxt.getTamanhoMatrizGrafo())
                         throw new Exception();
 
                     Vertice ponto = new Vertice();
-                    ponto.setNome(col.replaceAll("'", ""));
+                    ponto.setNome(coluna.replaceAll("'", ""));
 
                     vertices.add(ponto);
                     continue;
                 }
 
-                //Verifica se é uma linhaTxt da matriz distancia
-                if (!isRoute(colunas)) {
+                //Verifica se é uma linhaTxt da matrizElaborada distancia
+                if (!verificaSeLetra(colunas)) {
                     Vertice ponto = vertices.get(colunaMatriz);
                     List<Aresta> arestas = ponto.getArestas();
 
-                    Integer distancia = Integer.valueOf(col);
+                    Integer distancia = Integer.valueOf(coluna);
 
-                    Aresta dist = new Aresta();
+                    Aresta novaAresta = new Aresta();
                     try {
                         if (linhaMatriz == colunaMatriz && distancia != 0) {
                             continue;
@@ -91,24 +85,20 @@ public class LerEntradas {
                         System.out.println("A distancia do ponto " + ponto.getNome() + " é diferente de zero!");
                     }
 
-                    dist.setVerticeDestino(vertices.get(linhaMatriz).getNome());
-                    dist.setComprimento(distancia);
+                    novaAresta.setVerticeDestino(vertices.get(linhaMatriz).getNome());
+                    novaAresta.setComprimento(distancia);
 
-                    arestas.add(dist);
+                    arestas.add(novaAresta);
 
                     ponto.setArestas(arestas);
 
-                    matriz = true;
+                    matrizElaborada = true;
                     colunaMatriz++;
                     continue;
                 }
-
-                //Verifica se é uma linhaTxt da matriz entregas
             }
-
-            if (matriz) {
+            if (matrizElaborada)
                 linhaMatriz++;
-            }
         }
         if (arquivoTxt.getTamanhoMatrizGrafo() != linhaMatriz)
             throw new Exception();
@@ -119,16 +109,11 @@ public class LerEntradas {
         return arquivoTxt;
     }
 
-    /**
-     * Verifica se parte analisada é um caracter alfabetico,
-     * caso seja, sinifica que é um ponto do grafo
-     */
-
-    private static boolean isRoute(List<String> partes) {
-        for (String parte : partes) {
-            char[] ps = parte.toCharArray();
-            for (int i = 0; i < ps.length; i++) {
-                if (Character.isAlphabetic(ps[i])) {
+    private static boolean verificaSeLetra(List<String> colunas) {
+        for (String coluna : colunas) {
+            char[] posicao = coluna.toCharArray();
+            for (int i = 0; i < posicao.length; i++) {
+                if (Character.isAlphabetic(posicao[i])) {
                     return true;
                 }
             }
