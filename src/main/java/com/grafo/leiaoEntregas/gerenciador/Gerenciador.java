@@ -22,7 +22,7 @@ public class Gerenciador {
     private static Date start;
     private static Date finish;
 
-    private static String path = null;
+    private static String diretorio = null;
 
     /**
      * Construtor da classe que executa o menu
@@ -31,7 +31,7 @@ public class Gerenciador {
     public Gerenciador() throws Exception {
 
         Scanner ler = new Scanner(System.in);
-        int iniciar;
+        int opcaoMenu;
         while (true) {
 
             try {
@@ -44,9 +44,9 @@ public class Gerenciador {
                 System.out.println("6 - Mostrar Rotas ");
                 System.out.println("7 - Limpar tela ");
                 System.out.println("0 - Sair ");
-                iniciar = ler.nextInt();
+                opcaoMenu = ler.nextInt();
 
-                switch (iniciar) {
+                switch (opcaoMenu) {
                     case 1:
                         menuArquivos();
                         break;
@@ -81,7 +81,7 @@ public class Gerenciador {
 
     private void menuArquivos() {
         Scanner ler = new Scanner(System.in);
-        int iniciar;
+        int opcaoMenuArquivos;
         System.out.println("\n=================== =================== ESCOLHA UMA OPÇÃO =================== ===================");
         System.out.println("1 - Carregar Entradas Enunciado ");
         System.out.println("2 - Carregar Bug Parametro ");
@@ -90,41 +90,41 @@ public class Gerenciador {
         System.out.println("5 - Carregar Entradas 2");
         System.out.println("6 - Matriz Over Power");
         System.out.println("0 - Voltar ");
-        iniciar = ler.nextInt();
+        opcaoMenuArquivos = ler.nextInt();
 
-        switch (iniciar) {
+        switch (opcaoMenuArquivos) {
             case 1:
-                path = "src\\files\\entradas.txt";
+                diretorio = "src\\files\\entradas.txt";
                 ReadFile();
                 break;
 
             case 2:
-                path = "src\\files\\bug_parametro.txt";
+                diretorio = "src\\files\\bug_parametro.txt";
                 ReadFile();
                 break;
 
             case 3:
-                path = "src\\files\\bug_aleatorio.txt";
+                diretorio = "src\\files\\bug_aleatorio.txt";
                 ReadFile();
                 break;
 
             case 4:
-                path = "src\\files\\bug_complexa.txt";
+                diretorio = "src\\files\\bug_complexa.txt";
                 ReadFile();
                 break;
 
             case 5:
-                path = "src\\files\\entradas2.txt";
+                diretorio = "src\\files\\entradas2.txt";
                 ReadFile();
                 break;
 
             case 6:
                 System.out.println("Informe o tamanho da matriz:");
-                iniciar = ler.nextInt();
+                opcaoMenuArquivos = ler.nextInt();
                 System.out.println("Informe a complexidade da matriz.");
                 System.out.println("1 a 25 pouco complexo, 26 a 50 complexo, 51 a 75 muito complexo.");
                 Float f = ler.nextFloat();
-                entradas = GerarMatrizNxN.getMatriz(iniciar, f);
+                entradas = GerarMatrizNxN.getMatriz(opcaoMenuArquivos, f);
                 break;
 
             case 0:
@@ -205,7 +205,7 @@ public class Gerenciador {
     private static void ReadFile() {
         try {
             LerEntradas read = new LerEntradas();
-            entradas = read.lerArquivoTxt(path);
+            entradas = read.lerArquivoTxt(diretorio);
         } catch (Exception e) {
             System.out.println("Formato de arquivo inválido!");
         }
