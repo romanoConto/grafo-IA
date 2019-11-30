@@ -1,9 +1,9 @@
-package com.grafo.leiaoEntregas.carregarDados;
+package com.grafo.carregarDados;
 
-import com.grafo.leiaoEntregas.models.Aresta;
-import com.grafo.leiaoEntregas.models.Entradas;
-import com.grafo.leiaoEntregas.models.PontoEntrega;
-import com.grafo.leiaoEntregas.models.Vertice;
+import com.grafo.models.Aresta;
+import com.grafo.models.Entradas;
+import com.grafo.models.PontoEntrega;
+import com.grafo.models.Vertice;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

@@ -1,28 +1,28 @@
-package com.grafo.leiaoEntregas.entregas.calculoIA;
+package com.grafo.entregas.calculoIA;
 
-import com.grafo.leiaoEntregas.entregas.CalculaEntregasUtils;
-import com.grafo.leiaoEntregas.entregas.calculoProfundidade.Rota;
-import com.grafo.leiaoEntregas.models.Aresta;
-import com.grafo.leiaoEntregas.models.Entradas;
-import com.grafo.leiaoEntregas.models.Vertice;
+import com.grafo.entregas.CalculaEntregasUtils;
+import com.grafo.models.Aresta;
+import com.grafo.models.Entradas;
+import com.grafo.models.Vertice;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
-public class CalculaRotaEntregaIA {
+public class CalculaRotaEntregaIAThread implements Callable<RotaIA> {
     private List<RotaIA> rotas = new ArrayList<>();
     private Set<Vertice> verticesVisitados = new HashSet<>();
     CalculaEntregasUtils calcUtils;
 
-    public CalculaRotaEntregaIA(Entradas entradas) {
+    public CalculaRotaEntregaIAThread(Entradas entradas, RotaIA rota) {
         calcUtils = new CalculaEntregasUtils(entradas);
+        rotas.add(rota);
     }
 
-    public RotaIA calculaRota(RotaIA rota) {
+    public RotaIA calculaRota() {
 
-        rotas.add(rota);
         RotaIA menorRota = calculaVertices();
 
         return menorRota;
@@ -64,8 +64,6 @@ public class CalculaRotaEntregaIA {
 
     private boolean interromperRota(RotaIA rota) {
         try {
-            if (rota == null)
-                return true;
             return verticesVisitados.stream().anyMatch(x -> x.getNome().equals(rota.getVerticeAtual().getNome()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,5 +76,10 @@ public class CalculaRotaEntregaIA {
         if (rotas.isEmpty())
             return null;
         return rotas.get(0);
+    }
+
+    @Override
+    public RotaIA call() throws Exception {
+        return calculaRota();
     }
 }

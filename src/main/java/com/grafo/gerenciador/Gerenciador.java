@@ -1,12 +1,12 @@
-package com.grafo.leiaoEntregas.gerenciador;
+package com.grafo.gerenciador;
 
-import com.grafo.leiaoEntregas.carregarDados.GerarMatrizNxN;
-import com.grafo.leiaoEntregas.entregas.calculoIA.EntregasIA;
-import com.grafo.leiaoEntregas.entregas.calculoProfundidade.Entregas;
-import com.grafo.leiaoEntregas.entregas.calculoProfundidade.Rota;
-import com.grafo.leiaoEntregas.models.Entradas;
-import com.grafo.leiaoEntregas.carregarDados.LerEntradas;
-import com.grafo.leiaoEntregas.models.RotasEntrega;
+import com.grafo.entregas.calculoIA.EntregasIA;
+import com.grafo.entregas.calculoProfundidade.Entregas;
+import com.grafo.entregas.calculoProfundidade.Rota;
+import com.grafo.carregarDados.GerarMatrizNxN;
+import com.grafo.models.Entradas;
+import com.grafo.carregarDados.LerEntradas;
+import com.grafo.models.RotasEntrega;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.grafo.leiaoEntregas.models;
+package com.grafo.models;
 
 import java.util.List;
 
