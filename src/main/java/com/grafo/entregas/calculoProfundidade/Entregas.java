@@ -70,18 +70,24 @@ public class Entregas {
      * Faz o gerenciamento das entregas e retorna as rotas
      */
     public List<RotasEntrega> processarEntregas() throws CloneNotSupportedException {
+
+        //Obtem todos os pontos de entregas
         List<PontoEntrega> pontoEntregas = entradas.getVerticesMatrizEntrega();
 
+        //Calcula a menor distancia (tempo) de cada ponto de entrega
         for (PontoEntrega pontoEntrega : pontoEntregas) {
-            //Captura o primeiro ponto (A)
+
+            //Captura o primeiro ponto (A).
             Vertice pontoAtual = entradas.getVerticesMatrizGrafo().get(0);
+
+            // Somente parametros para iniciar calculo.
             Rota rota = new Rota();
             rota.setDistancia(0);
             rota.setRecompensa(0);
             rota.setDestino(pontoEntrega.getVerticeDestino());
             rota.addPonto(pontoAtual.getNome());
 
-            //Solicita as rotas
+            //Solicita as rotas. Retornar um objeto "RotasEntrega" com a menor rota e as rotas alternativas.
             RotasEntrega re = retornaRotas(pontoAtual, rota, null);
 
             if (re != null) {
@@ -98,6 +104,8 @@ public class Entregas {
 
     private RotasEntrega retornaRotas(Vertice pontoAtual, Rota rota, List<String> pontosVerificados)
             throws CloneNotSupportedException {
+
+        //Retorna todas as possiveis rotas.
         List<Rota> possiveisRotas = getPossiveisRotas(pontoAtual, rota, pontosVerificados);
 
         //Faz a comparação entre as rotas e coloca a menor rota na primeira posição da lista (0)
@@ -127,17 +135,17 @@ public class Entregas {
      */
 
     private List<Rota> getPossiveisRotas(Vertice pontoAtual, Rota rotaAnt,
-                                         List<String> pontosVerificados, Aresta distAnt) throws CloneNotSupportedException {
-        //Cria uma nova rota com base na rota anterior (rotaAnt)
+                                         List<String> pontosVerificados, Aresta arestaAnterior) throws CloneNotSupportedException {
+        //Cria uma nova rota com base na rota anterior (rotaAnt) (copia)
         Rota rota = new Rota();
         rota.setRecompensa(rotaAnt.getRecompensa());
         rota.setPontos(new ArrayList<>(rotaAnt.getPontos()));
         rota.setDistancia(rotaAnt.getDistancia());
         rota.setDestino(rotaAnt.getDestino());
 
-        if (distAnt != null && !rota.getPontos().contains(distAnt.getVerticeDestino())) {
-            rota.addPonto(distAnt.getVerticeDestino());
-            rota.addDistancia(distAnt.getComprimento());
+        if (arestaAnterior != null && !rota.getPontos().contains(arestaAnterior.getVerticeDestino())) {
+            rota.addPonto(arestaAnterior.getVerticeDestino());
+            rota.addDistancia(arestaAnterior.getComprimento());
         }
 
         List<Rota> rotasPonto = new ArrayList<>();
@@ -146,14 +154,16 @@ public class Entregas {
             pontosVerificados = new ArrayList<>();
         }
 
+        //Varre arestas do nó
         for (Aresta aresta : pontoAtual.getArestas()) {
-            //Verifica se ja passou pela rota ou seja alcançavel
+
+            //Verifica se ja passou pela nó ou se não nó na aresta
             if (pontosVerificados.stream().anyMatch(x -> x.equals(aresta.getVerticeDestino()))
                     || aresta.getComprimento() == 0) {
                 continue;
             }
 
-            //Encontrei meu ponto de destino
+            //Verifica se encontrou o ponto de destino
             if (aresta.getVerticeDestino().equals(rota.getDestino())) {
                 //Crio uma nova rota setando o ponto
                 Rota r = new Rota();
@@ -172,11 +182,15 @@ public class Entregas {
 
             //Adiciona os pontos verificados
             List<String> pontosVerfi = new ArrayList<>();
-            for (String p : rota.getPontos())
-                pontosVerfi.add(p);
+            for (String pontoString : rota.getPontos())
+                pontosVerfi.add(pontoString);
 
+            //obtem o proximo ponto a ser calculado
             Vertice ponto = calcUtils.getPonto(aresta.getVerticeDestino());
+
+            //chama recursivamente a função passando o ponto atual, a rota em percurso, os pontos ja visitados, e a aresta anterior.
             List<Rota> r = getPossiveisRotas(ponto, rota, pontosVerfi, aresta);
+
             if (r != null) {
                 rotasPonto.addAll(r);
             }

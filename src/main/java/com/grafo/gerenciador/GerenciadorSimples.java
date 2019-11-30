@@ -158,6 +158,11 @@ public class GerenciadorSimples {
         return s.toString();
     }
 
+    private static void limparTela() throws IOException {
+        for (int i = 0; i < 100; ++i)
+            System.out.println();
+    }
+
     /**
      * Faz a leitura do arquivo, caso não seja possivel ler lança exception ao user
      */
@@ -175,15 +180,8 @@ public class GerenciadorSimples {
      * Faz o calculo das entregas retornando as rotas
      */
     private static void calcularRota() throws CloneNotSupportedException {
-        start = new Date();
         Entregas matriz = new Entregas(entradas);
         rotas = matriz.processarEntregas();
-        finish = new Date();
-    }
-
-    private static void limparTela() throws IOException {
-        for (int i = 0; i < 100; ++i)
-            System.out.println();
     }
 }
 
