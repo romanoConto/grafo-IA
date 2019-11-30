@@ -1,8 +1,6 @@
 package com.grafo.gerenciador;
 
-import com.grafo.carregarDados.GerarMatrizNxN;
 import com.grafo.carregarDados.LerEntradas;
-import com.grafo.entregas.calculoIA.EntregasIA;
 import com.grafo.entregas.calculoProfundidade.Entregas;
 import com.grafo.entregas.calculoProfundidade.Rota;
 import com.grafo.models.Entradas;
@@ -148,7 +146,7 @@ public class GerenciadorSimples {
         }
         System.out.println("\n\nO lucro total do dia: " + recompensa + ".");
 
-        calculaCaminho();
+        calculaCaminhoMaisLucrativo();
     }
 
     /**
@@ -192,17 +190,17 @@ public class GerenciadorSimples {
         rotas = matriz.processarEntregas();
     }
 
-    private static void calculaCaminho() {
+    private static void calculaCaminhoMaisLucrativo() {
         try {
             List<Rota> menoresRotas = rotas.stream().map(x -> x.getRotaMenor()).collect(Collectors.toList());
 
             MelhorEntrega melhorEntrega = new MelhorEntrega();
-            melhorEntrega.setBonus(0);
+            melhorEntrega.setBonusTotal(0);
             melhorEntrega.setEntregas(new ArrayList<>());
-            melhorEntrega.setTempo(0);
+            melhorEntrega.setTempoAtual(0);
 
             melhorEntrega = calculaMelhorEntrega(melhorEntrega, menoresRotas, null);
-            System.out.println(melhorEntrega.getBonus());
+            System.out.println(melhorEntrega.getBonusTotal());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -213,17 +211,17 @@ public class GerenciadorSimples {
 
         if (pendenteAnterior != null) {
             melhorEntrega.addEntregas(pendenteAnterior);
-            melhorEntrega.addTempo(pendenteAnterior.getPartida() + (pendenteAnterior.getDistancia() * 2));
+            melhorEntrega.setTempoAtual(pendenteAnterior.getPartida() + (pendenteAnterior.getDistancia() * 2));
             melhorEntrega.addBonus(pendenteAnterior.getRecompensa());
         }
 
-        List<MelhorEntrega> melhorEntregas = new ArrayList<>();
+        List<MelhorEntrega> melhoresEntregas = new ArrayList<>();
 
         for (Rota pendente : pendentes) {
-            if (pendente.getPartida() <= melhorEntrega.getTempo()) {
+            if (pendente.getPartida() >= melhorEntrega.getTempoAtual()) {
                 MelhorEntrega novoMelhorEntrega = new MelhorEntrega();
-                novoMelhorEntrega.setTempo(melhorEntrega.getTempo());
-                novoMelhorEntrega.setBonus(melhorEntrega.getBonus());
+                novoMelhorEntrega.setTempoAtual(melhorEntrega.getTempoAtual());
+                novoMelhorEntrega.setBonusTotal(melhorEntrega.getBonusTotal());
                 novoMelhorEntrega.setEntregas(new ArrayList<>(melhorEntrega.getEntregas()));
 
                 List<Rota> novoPendentes = new ArrayList<>(pendentes);
@@ -231,13 +229,13 @@ public class GerenciadorSimples {
 
                 MelhorEntrega retornoMelhorEntrega = calculaMelhorEntrega(novoMelhorEntrega, novoPendentes, pendente);
                 if (retornoMelhorEntrega != null)
-                    melhorEntregas.add(retornoMelhorEntrega);
+                    melhoresEntregas.add(retornoMelhorEntrega);
                 else
-                    melhorEntregas.add(novoMelhorEntrega);
+                    melhoresEntregas.add(novoMelhorEntrega);
             }
         }
-        melhorEntregas.sort((x, y) -> Integer.compare(y.getBonus(), x.getBonus()));
-        return melhorEntregas.isEmpty() ? null : melhorEntregas.get(0);
+        melhoresEntregas.sort((x, y) -> Integer.compare(y.getBonusTotal(), x.getBonusTotal()));
+        return melhoresEntregas.isEmpty() ? null : melhoresEntregas.get(0);
     }
 }
 
