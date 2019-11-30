@@ -189,6 +189,7 @@ public class Entregas {
             Vertice ponto = calcUtils.getPonto(aresta.getVerticeDestino());
 
             //chama recursivamente a função passando o ponto atual, a rota em percurso, os pontos ja visitados, e a aresta anterior.
+            //BUSCA PROFUNDA
             List<Rota> r = getPossiveisRotas(ponto, rota, pontosVerfi, aresta);
 
             if (r != null) {
