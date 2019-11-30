@@ -91,6 +91,7 @@ public class Entregas {
             RotasEntrega re = retornaRotas(pontoAtual, rota, null);
 
             if (re != null) {
+                re.getRotaMenor().setPartida(pontoEntrega.getTempoSaida());
                 rotas.add(re);
             }
         }
