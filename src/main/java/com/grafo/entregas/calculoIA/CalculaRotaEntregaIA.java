@@ -27,14 +27,20 @@ public class CalculaRotaEntregaIA {
         return menorRota;
     }
 
+
+    /**
+     *Busca em Exploitation
+     */
     private RotaIA calculaVertices() {
 
+        //Busca em Exploration
         RotaIA rota = getMenorRotaAtual();
         if (rota == null)
             return null;
         RotaIA rotaCalculada = calculaArestas(rota);
 
         if (rotaCalculada == null)
+            //Busca em Exploitation
             return calculaVertices();
 
         else
@@ -72,6 +78,10 @@ public class CalculaRotaEntregaIA {
         }
     }
 
+    /**
+     * Busca Exploration
+     * Busca em todas as rotas já conhecidas e retorna a que possui menor tamanho.
+     */
     private RotaIA getMenorRotaAtual() {
         rotas.sort((x, y) -> Integer.compare(x.getDistancia(), y.getDistancia()));
         if (rotas.isEmpty())

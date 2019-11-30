@@ -59,6 +59,7 @@ public class EntregasIA {
 
         int i = 0;
         List<CalculaRotaEntregaIAThread> entregas = new ArrayList<>();
+
         for (PontoEntrega pontoEntrega : pontoEntregas) {
             i++;
             //Captura o primeiro ponto (A)
