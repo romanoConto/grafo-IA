@@ -56,10 +56,10 @@ public class GerenciadorSimples {
                     case 2:
                         calcularRota();
                         break;
-                    case 6:
+                    case 3:
                         mostrarRota();
                         break;
-                    case 7:
+                    case 4:
                         limparTela();
                         break;
                     case 0:
