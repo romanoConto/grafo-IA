@@ -7,7 +7,9 @@ import com.grafo.models.Entradas;
 import com.grafo.models.MelhorEntrega;
 import com.grafo.models.RotasEntrega;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -134,7 +136,7 @@ public class GerenciadorSimples {
                 isTrue = true;
             }
 
-            System.out.println("\n\nA rota Principal é: " + printRoute(r));
+            System.out.println("\nA rota menor é: " + printRoute(r));
             System.out.println(
                     "Com a chegada estimada de " + r.getDistancia() + " unidades de tempo no destino " + "'"
                             + r.getDestino() + "'" + " e o valor para esta entrega será de " + (isTrue ?
@@ -144,8 +146,6 @@ public class GerenciadorSimples {
             recompensa += r.getRecompensa();
             cont++;
         }
-        System.out.println("\n\nO lucro total do dia: " + recompensa + ".");
-
         calculaCaminhoMaisLucrativo();
     }
 
@@ -153,7 +153,7 @@ public class GerenciadorSimples {
      * Monta a tela da principal rota
      */
 
-    private String printRoute(Rota r) {
+    private static String printRoute(Rota r) {
         StringBuilder s = new StringBuilder();
 
         for (String d : r.getPontos()) {
@@ -200,12 +200,35 @@ public class GerenciadorSimples {
             melhorEntrega.setTempoAtual(0);
 
             melhorEntrega = calculaMelhorEntrega(melhorEntrega, menoresRotas, null);
-            System.out.println(melhorEntrega.getBonusTotal());
+            mostraMelhorSeguenciaEntrega(melhorEntrega);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private static void mostraMelhorSeguenciaEntrega(MelhorEntrega melhorEntrega) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        sb.append("========================================================== Melhores Entregas para Obter o Maior Bonus =====================================================");
+
+        for (Rota rota : melhorEntrega.getEntregas()) {
+            sb.append("\n");
+            sb.append("Deve partir no tempo ");
+            sb.append(rota.getPartida());
+            sb.append(" para fazer a entrega ");
+            sb.append(printRoute(rota));
+            sb.append(" Recebe o bonus de ");
+            sb.append(rota.getRecompensa());
+        }
+        sb.append("\n\nO lucro total do dia: " + melhorEntrega.getBonusTotal() + ".");
+        System.out.print(sb);
+        System.out.println("\n\nAperte enter para continuar.");
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
+        System.in.read();
+        limparTela();
+    }
+
 
     private static MelhorEntrega calculaMelhorEntrega(MelhorEntrega melhorEntrega, List<Rota> pendentes, Rota pendenteAnterior) {
 
