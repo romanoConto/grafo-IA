@@ -6,17 +6,24 @@ import java.util.List;
 public class Rota implements Cloneable {
 
     private int distancia;
+    private int partida;
     private int recompensa;
     private String destino;
     private List<String> pontos = new ArrayList<>();
 
-    public String getDestino()
-    {
+    public int getPartida() {
+        return partida;
+    }
+
+    public void setPartida(int partida) {
+        this.partida = partida;
+    }
+
+    public String getDestino() {
         return destino;
     }
 
-    public void setDestino(String destino)
-    {
+    public void setDestino(String destino) {
         this.destino = destino;
     }
 
@@ -48,8 +55,7 @@ public class Rota implements Cloneable {
         this.pontos = pontos;
     }
 
-    public void addPonto(String ponto)
-    {
+    public void addPonto(String ponto) {
         this.pontos.add(ponto);
     }
 

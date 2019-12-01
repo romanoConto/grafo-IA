@@ -1,23 +1,25 @@
 package com.grafo.gerenciador;
 
-import com.grafo.carregarDados.GerarMatrizNxN;
 import com.grafo.carregarDados.LerEntradas;
-import com.grafo.entregas.calculoIA.EntregasIA;
 import com.grafo.entregas.calculoProfundidade.Entregas;
 import com.grafo.entregas.calculoProfundidade.Rota;
 import com.grafo.models.Entradas;
+import com.grafo.models.MelhorEntrega;
 import com.grafo.models.RotasEntrega;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class GerenciadorSimples {
 
-    private static Entradas entradas = new Entradas();
-    private static List<RotasEntrega> rotas = new ArrayList<>();
+    private static Entradas entradas;
+    private static List<RotasEntrega> rotas;
     private static int cores = Runtime.getRuntime().availableProcessors();
     private static Date start;
     private static Date finish;
@@ -37,8 +39,12 @@ public class GerenciadorSimples {
             try {
                 System.out.println("\n=================== =================== LEILÃO DE ENTREGAS =================== ===================");
                 System.out.println("1 - Carregar Entradas ");
-                System.out.println("2 - Calcular Entregas Busca Profunda");
-                System.out.println("6 - Mostrar Rotas ");
+                if (entradas != null) {
+                    System.out.println("2 - Calcular Entregas Busca Profunda");
+                    if (rotas != null) {
+                        System.out.println("6 - Mostrar Rotas ");
+                    }
+                }
                 System.out.println("7 - Limpar tela ");
                 System.out.println("0 - Sair ");
                 opcaoMenu = ler.nextInt();
@@ -50,10 +56,10 @@ public class GerenciadorSimples {
                     case 2:
                         calcularRota();
                         break;
-                    case 6:
+                    case 3:
                         mostrarRota();
                         break;
-                    case 7:
+                    case 4:
                         limparTela();
                         break;
                     case 0:
@@ -130,7 +136,7 @@ public class GerenciadorSimples {
                 isTrue = true;
             }
 
-            System.out.println("\n\nA rota Principal é: " + printRoute(r));
+            System.out.println("\nA rota menor é: " + printRoute(r));
             System.out.println(
                     "Com a chegada estimada de " + r.getDistancia() + " unidades de tempo no destino " + "'"
                             + r.getDestino() + "'" + " e o valor para esta entrega será de " + (isTrue ?
@@ -140,14 +146,14 @@ public class GerenciadorSimples {
             recompensa += r.getRecompensa();
             cont++;
         }
-        System.out.println("\n\nO lucro total do dia: " + recompensa + ".");
+        calculaCaminhoMaisLucrativo();
     }
 
     /**
      * Monta a tela da principal rota
      */
 
-    private String printRoute(Rota r) {
+    private static String printRoute(Rota r) {
         StringBuilder s = new StringBuilder();
 
         for (String d : r.getPontos()) {
@@ -182,6 +188,77 @@ public class GerenciadorSimples {
     private static void calcularRota() throws CloneNotSupportedException {
         Entregas matriz = new Entregas(entradas);
         rotas = matriz.processarEntregas();
+    }
+
+    private static void calculaCaminhoMaisLucrativo() {
+        try {
+            List<Rota> menoresRotas = rotas.stream().map(x -> x.getRotaMenor()).collect(Collectors.toList());
+
+            MelhorEntrega melhorEntrega = new MelhorEntrega();
+            melhorEntrega.setBonusTotal(0);
+            melhorEntrega.setEntregas(new ArrayList<>());
+            melhorEntrega.setTempoAtual(0);
+
+            melhorEntrega = calculaMelhorEntrega(melhorEntrega, menoresRotas, null);
+            mostraMelhorSeguenciaEntrega(melhorEntrega);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void mostraMelhorSeguenciaEntrega(MelhorEntrega melhorEntrega) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        sb.append("========================================================== Melhores Entregas para Obter o Maior Bonus =====================================================");
+
+        for (Rota rota : melhorEntrega.getEntregas()) {
+            sb.append("\n");
+            sb.append("Deve partir no tempo ");
+            sb.append(rota.getPartida());
+            sb.append(" para fazer a entrega ");
+            sb.append(printRoute(rota));
+            sb.append(" Recebe o bonus de ");
+            sb.append(rota.getRecompensa());
+        }
+        sb.append("\n\nO lucro total do dia: " + melhorEntrega.getBonusTotal() + ".");
+        System.out.print(sb);
+        System.out.println("\n\nAperte enter para continuar.");
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
+        System.in.read();
+        limparTela();
+    }
+
+
+    private static MelhorEntrega calculaMelhorEntrega(MelhorEntrega melhorEntrega, List<Rota> pendentes, Rota pendenteAnterior) {
+
+        if (pendenteAnterior != null) {
+            melhorEntrega.addEntregas(pendenteAnterior);
+            melhorEntrega.setTempoAtual(pendenteAnterior.getPartida() + (pendenteAnterior.getDistancia() * 2));
+            melhorEntrega.addBonus(pendenteAnterior.getRecompensa());
+        }
+
+        List<MelhorEntrega> melhoresEntregas = new ArrayList<>();
+
+        for (Rota pendente : pendentes) {
+            if (pendente.getPartida() >= melhorEntrega.getTempoAtual()) {
+                MelhorEntrega novoMelhorEntrega = new MelhorEntrega();
+                novoMelhorEntrega.setTempoAtual(melhorEntrega.getTempoAtual());
+                novoMelhorEntrega.setBonusTotal(melhorEntrega.getBonusTotal());
+                novoMelhorEntrega.setEntregas(new ArrayList<>(melhorEntrega.getEntregas()));
+
+                List<Rota> novoPendentes = new ArrayList<>(pendentes);
+                novoPendentes.remove(pendente);
+
+                MelhorEntrega retornoMelhorEntrega = calculaMelhorEntrega(novoMelhorEntrega, novoPendentes, pendente);
+                if (retornoMelhorEntrega != null)
+                    melhoresEntregas.add(retornoMelhorEntrega);
+                else
+                    melhoresEntregas.add(novoMelhorEntrega);
+            }
+        }
+        melhoresEntregas.sort((x, y) -> Integer.compare(y.getBonusTotal(), x.getBonusTotal()));
+        return melhoresEntregas.isEmpty() ? null : melhoresEntregas.get(0);
     }
 }
 
