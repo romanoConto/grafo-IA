@@ -144,6 +144,7 @@ public class Entregas {
         rota.setDistancia(rotaAnt.getDistancia());
         rota.setDestino(rotaAnt.getDestino());
 
+        //adiciona o ponto na rota
         if (arestaAnterior != null && !rota.getPontos().contains(arestaAnterior.getVerticeDestino())) {
             rota.addPonto(arestaAnterior.getVerticeDestino());
             rota.addDistancia(arestaAnterior.getComprimento());
