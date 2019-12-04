@@ -82,7 +82,7 @@ public class GerenciadorSimples {
         System.out.println("3 - Carregar Bug Parametro ");
         System.out.println("4 - Carregar Bug Aleatorio ");
         System.out.println("5 - Carregar Bug Complexa ");
-        System.out.println("6 - Carregar Entrada Nova ");
+        System.out.println("6 - Carregar Entrada Nova Professor 03/12 ");
         System.out.println("0 - Voltar ");
         opcaoMenuArquivos = ler.nextInt();
 
@@ -113,7 +113,7 @@ public class GerenciadorSimples {
                 break;
 
             case 6:
-                diretorio = "src\\files\\entrada-trabalho.csv";
+                diretorio = "src\\Files\\entrada-nova.txt";
                 ReadFile();
                 break;
 
