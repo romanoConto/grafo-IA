@@ -40,12 +40,12 @@ public class GerenciadorSimples {
                 System.out.println("\n=================== =================== LEILÃO DE ENTREGAS =================== ===================");
                 System.out.println("1 - Carregar Entradas ");
                 if (entradas != null) {
-                    System.out.println("2 - Calcular Entregas Busca Profunda");
+                    System.out.println("2 - Calcular Entregas");
                     if (rotas != null) {
-                        System.out.println("6 - Mostrar Rotas ");
+                        System.out.println("3 - Mostrar Rotas ");
                     }
                 }
-                System.out.println("7 - Limpar tela ");
+                System.out.println("4 - Limpar tela ");
                 System.out.println("0 - Sair ");
                 opcaoMenu = ler.nextInt();
 
@@ -82,6 +82,7 @@ public class GerenciadorSimples {
         System.out.println("3 - Carregar Bug Parametro ");
         System.out.println("4 - Carregar Bug Aleatorio ");
         System.out.println("5 - Carregar Bug Complexa ");
+        System.out.println("6 - Carregar Entrada Nova Professor 03/12 ");
         System.out.println("0 - Voltar ");
         opcaoMenuArquivos = ler.nextInt();
 
@@ -108,6 +109,11 @@ public class GerenciadorSimples {
 
             case 5:
                 diretorio = "src\\files\\bug_complexa.txt";
+                ReadFile();
+                break;
+
+            case 6:
+                diretorio = "src\\Files\\entrada-nova.txt";
                 ReadFile();
                 break;
 
@@ -192,8 +198,12 @@ public class GerenciadorSimples {
 
     private static void calculaCaminhoMaisLucrativo() {
         try {
+
+            //pega a lista de menores rotas
             List<Rota> menoresRotas = rotas.stream().map(x -> x.getRotaMenor()).collect(Collectors.toList());
 
+
+            //crita uma nova lista de melhor entrega seta os valores inicias
             MelhorEntrega melhorEntrega = new MelhorEntrega();
             melhorEntrega.setBonusTotal(0);
             melhorEntrega.setEntregas(new ArrayList<>());
@@ -206,6 +216,10 @@ public class GerenciadorSimples {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Monta mensagem custumizada para o usuario na tela
+     */
 
     private static void mostraMelhorSeguenciaEntrega(MelhorEntrega melhorEntrega) throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -229,35 +243,51 @@ public class GerenciadorSimples {
         limparTela();
     }
 
+    /**
+     * calcular a melhor sequencia de entrega para obter o maior lucro
+     */
 
     private static MelhorEntrega calculaMelhorEntrega(MelhorEntrega melhorEntrega, List<Rota> pendentes, Rota pendenteAnterior) {
 
+        // se a rota anterior não é nula
         if (pendenteAnterior != null) {
             melhorEntrega.addEntregas(pendenteAnterior);
             melhorEntrega.setTempoAtual(pendenteAnterior.getPartida() + (pendenteAnterior.getDistancia() * 2));
             melhorEntrega.addBonus(pendenteAnterior.getRecompensa());
         }
 
+        // lista que guarda as melhores entregas
         List<MelhorEntrega> melhoresEntregas = new ArrayList<>();
 
+        //verifica rota a rota que ainda estão pedentes de verificação
         for (Rota pendente : pendentes) {
-            if (pendente.getPartida() >= melhorEntrega.getTempoAtual()) {
+
+            //verifica se é possivel realizar a entrega a tempo
+            if (melhorEntrega.getTempoAtual() <= pendente.getPartida()) {
                 MelhorEntrega novoMelhorEntrega = new MelhorEntrega();
                 novoMelhorEntrega.setTempoAtual(melhorEntrega.getTempoAtual());
                 novoMelhorEntrega.setBonusTotal(melhorEntrega.getBonusTotal());
                 novoMelhorEntrega.setEntregas(new ArrayList<>(melhorEntrega.getEntregas()));
 
+                //cria uma copia das rotas pendentes
                 List<Rota> novoPendentes = new ArrayList<>(pendentes);
+                //remove a rota atual da lista
                 novoPendentes.remove(pendente);
 
+                //calcula a melhor sequencia de entrega a partir do ponto já calculado
                 MelhorEntrega retornoMelhorEntrega = calculaMelhorEntrega(novoMelhorEntrega, novoPendentes, pendente);
+
                 if (retornoMelhorEntrega != null)
                     melhoresEntregas.add(retornoMelhorEntrega);
                 else
                     melhoresEntregas.add(novoMelhorEntrega);
             }
         }
+
+        //ordena do maior para o menor bonus
         melhoresEntregas.sort((x, y) -> Integer.compare(y.getBonusTotal(), x.getBonusTotal()));
+
+        //retorna a melhor entrega com melhor bonus
         return melhoresEntregas.isEmpty() ? null : melhoresEntregas.get(0);
     }
 }
