@@ -8,6 +8,7 @@ import com.grafo.models.Entradas;
 import com.grafo.carregarDados.LerEntradas;
 import com.grafo.models.RotasEntrega;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -94,27 +95,27 @@ public class Gerenciador {
 
         switch (opcaoMenuArquivos) {
             case 1:
-                diretorio = "src\\files\\entradas.txt";
+                diretorio = "src" + File.separator + "Files" + File.separator + "entradas.txt";
                 ReadFile();
                 break;
 
             case 2:
-                diretorio = "src\\files\\bug_parametro.txt";
+                diretorio = "src" + File.separator + "Files" + File.separator + "bug_parametro.txt";
                 ReadFile();
                 break;
 
             case 3:
-                diretorio = "src\\files\\bug_aleatorio.txt";
+                diretorio = "src" + File.separator + "Files" + File.separator + "bug_aleatorio.txt";
                 ReadFile();
                 break;
 
             case 4:
-                diretorio = "src\\files\\bug_complexa.txt";
+                diretorio = "src" + File.separator + "Files" + File.separator + "bug_complexa.txt";
                 ReadFile();
                 break;
 
             case 5:
-                diretorio = "src\\files\\entradas2.txt";
+                diretorio = "src" + File.separator + "Files" + File.separator + "entradas2.txt";
                 ReadFile();
                 break;
 

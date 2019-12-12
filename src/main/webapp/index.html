@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>bibliotecas grafos</title>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://unpkg.com/lodash@4.17.4/lodash.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.9.4/cytoscape.min.js"></script>
+	<script type="text/javascript" src="resources/js/cytoscape-edgehandles.js"></script>
+	<link rel="stylesheet" href="resources/css/site.css" />
+
+</head>
+<body>
+	<style>
+		.container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		.header {
+			height: 100px;
+		}
+		#main {
+			height: 100%;
+			display: flex;
+			flex-direction: row;
+		}
+		.left {
+			width: 100%;
+		}
+		.right {
+			width: 200px;
+		}
+
+	</style>
+	<div class="container">
+		<div class="header">
+			<h1>Biblioteca Grafos - Busca da Menor Rota</h1>
+		</div>
+		<div id="file-picker">
+			<input type="file" id="input-file" />
+			<button id="upload-file-button">Carregar arquivo</button>
+		</div>
+		<div id="main">
+			<div id="viewport" class="left"></div>
+			<div class="right">
+				Selecione uma rota de entrega:
+				<ul id="route-list"></ul>
+				<div id="route-desc"></div>
+			</div>
+		</div>
+		<div id="loading">
+			Carregando...
+		</div>
+	</div>
+	<script src="resources/js/dijkstra.js"></script>
+</body>
+</html>

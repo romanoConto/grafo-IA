@@ -1,6 +1,20 @@
 package com.grafo.servicos;
 
+import com.grafo.carregarDados.LerEntradas;
 import com.grafo.controlers.GrafoController;
+import com.grafo.entregas.calculoIA.EntregasIA;
+import com.grafo.entregas.calculoProfundidade.Entregas;
+import com.grafo.models.Entradas;
+import com.grafo.models.RotasEntrega;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.ws.rs.*;
@@ -8,33 +22,25 @@ import javax.ws.rs.core.Response;
 
 @Path("/grafo")
 public class GrafoEntregasRest {
-
-    @GET
-    @Path("/getGrafo/{path}/{name}")
+    @POST
+    @Path("/upload")
     @Produces("application/json")
-    public Response getGrafo(@PathParam("path") String path, @PathParam("name") String name) {
-        try {
-            GrafoController gc = new GrafoController(path, name);
-            JSONObject grafo = gc.getGrafo();
-            return Response.ok(grafo.toString()).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500).build();
-        }
+    public Response upload(InputStream uploadedInputStream) throws Exception
+    {
+        LerEntradas read = new LerEntradas();
+        Entradas entradas;
+        java.nio.file.Path tempFile = Files.createTempFile("input", ".txt");
+
+        Files.copy(uploadedInputStream, tempFile, StandardCopyOption.REPLACE_EXISTING);
+        entradas = read.lerArquivoTxt( tempFile.toString());
+
+        EntregasIA matriz = new EntregasIA(entradas);
+        List<RotasEntrega> rotas = matriz.processarEntregas();
+
+        JSONObject json = new JSONObject();
+        json.put("entrada", new JSONObject(entradas));
+        json.put("rotas", new JSONArray(rotas));
+        return Response.ok(json.toString()).build();
     }
 
-    @GET
-    @Path("/getRoutes/{path}/{name}")
-    @Produces("application/json")
-    public Response getRoutes(@PathParam("path") String path, @PathParam("name") String name, @QueryParam("method") Integer method) {
-        try {
-            method = method == null || method > 3 || method < 0 ? 2 : method;
-            GrafoController gc = new GrafoController(path, name);
-            JSONObject grafo = gc.getRoutes(method);
-            return Response.ok(grafo.toString()).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500).build();
-        }
-    }
 }
