@@ -8,10 +8,6 @@ margin-top: 225px;
 }
 
 #dijkstra {
-    left:45%;
-    margin-left:-225px;
-    position:absolute;
-    width:800px;    
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -48,9 +44,11 @@ body {
 }
 
 #viewport {
-    margin-top: 225px;
-    margin-left: -560px;
-    position: absolute;
-    left: 50%;
+    /*margin-top: 225px;*/
+    /*margin-left: -560px;*/
+    /*position: absolute;*/
+    /*left: 50%;*/
+    width: 800px;
+    height: 600px;
 }
 

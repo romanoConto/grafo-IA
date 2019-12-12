@@ -1,45 +1,58 @@
-<!doctype html>
-<html lang="pt">
-  <head>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>bibliotecas grafos</title>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script type="text/javascript" src="https://unpkg.com/lodash@4.17.4/lodash.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.9.4/cytoscape.min.js"></script>
+	<script type="text/javascript" src="resources/js/cytoscape-edgehandles.js"></script>
+	<link rel="stylesheet" href="resources/css/site.css" />
 
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<style>
+		.container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		.header {
+			height: 100px;
+		}
+		#main {
+			height: 100%;
+			display: flex;
+			flex-direction: row;
+		}
+		.left {
+			width: 100%;
+		}
+		.right {
+			width: 200px;
+		}
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>bibliotecas grafos</title>
-    <link rel="stylesheet" href="resources/css/site.css"></link>
-    
-  </head>
-  <body>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
-
-    <div id="principal">
-        <h1>Biblioteca Grafos</h1>    
-        <form>
-            <input id="inputFile" type="file">            
-            <button id="buttonEnviar">Enviar</button>
-        </form>
-    </div>
-    
-    <script>
-      this.salvar = function () {
-        let inputFile = document.getElementById("inputFile");
-        let path = "C:\Users\Alexandre\IdeaProjects\git\grafo-IA\src\Files";
-
-        if(inputFile) {
-            let arquivo = inputFile.value.slice(12);
-            
-            
-
-        }
-      }      
-    </script>
-  </body>
+	</style>
+	<div class="container">
+		<div class="header">
+			<h1>Biblioteca Grafos - Busca da Menor Rota</h1>
+		</div>
+		<div id="file-picker">
+			<input type="file" id="input-file" />
+			<button id="upload-file-button">Carregar arquivo</button>
+		</div>
+		<div id="main">
+			<div id="viewport" class="left"></div>
+			<div class="right">
+				Selecione uma rota de entrega:
+				<ul id="route-list"></ul>
+				<div id="route-desc"></div>
+			</div>
+		</div>
+		<div id="loading">
+			Carregando...
+		</div>
+	</div>
+	<script src="resources/js/dijkstra.js"></script>
+</body>
 </html>
